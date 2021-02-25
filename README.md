@@ -41,7 +41,7 @@ $ ls -lh snp_position.txt
  
 $ wc snp_positions.txt
 
-1. This command prints teh number of lines, words, and characters in the file 
+1. This command prints the number of lines, words, and characters in the file 
 2. this file has 984 lines, 13198 words, and 82763 characters
 
 
@@ -54,7 +54,7 @@ $ awk -F "\t" '{print NF; exit}' snp_positions.txt
 $ head -n 2 snp_position.txt | column -t
 
 1. first outputted the first two lines of the file and piped them to a command that would sort the lines into a readable output
-2. I saw the contents of the header and noticed thre important columsn that were SNP_ID, Chromosome, and Position
+2. I saw the contents of the header and noticed three important columns that were SNP_ID, Chromosome, and Position
 
 ##Data Processing
 
@@ -79,14 +79,14 @@ $ awk '$2 == 1' master_SCPG_maize.txt | sort -n -k3 | sed 's/multiple/?/g' > chr
 1. this code first searches field 2 for any lines that contain the value 1
 2. Once all lines are outputted to the next command, they are then sorted in numerical order by field 3
 3. lastly, anything that matches the string "multiple" will be replaced with a "?" and it is not important to specify the field since "mutiple" can only occur in $3 
-4. this code will also be used for all other chromosomes in increasing numerical order. I will simply swap the value that $2 is equivalent to with the respecting chromosome number and change that in the file name it is outputted to. 
+4. this code will also be used for all other chromosomes in increasing numerical order. I will simply swap the value that $2 is equivalent to with the respective chromosome number and change that in the file name it is outputted to. 
 
 
 $ awk '$2 == 1' master_SCPG_maize.txt | sort -n -r -k3 | sed 's/multiple/-/g' > chromosome1_maize_decreasing.txt
 
-1. this code is xactly the same as the one above except for 3 changes
+1. this code is exactly the same as the one above except for 3 changes
 2. in the sort program I added -r after -n to indicate that it is numerical but in the reverse order
-3. in the sed program I changed what character would swpa the place of "multiple" and now a "-" appears for when "multiple" was indicated in the $3
+3. in the sed program I changed what character would swap the place of "multiple" and now a "-" appears for when "multiple" was indicated in the $3
 4. I also changed the name of the output file by adding decreasing at the end to indicate this file has reverse numerical order 
 
 
@@ -101,6 +101,19 @@ $ awk '$2~/^multiple/' master_SCPG_maize.txt > multiple_maizeSNP.txt
 1. this code searches for the string "multiple" within the $2 of the master_SCPG_maize.txt file
 2. any matches it comes up with will pull the entire line and output it to the file multiple_maizeSNP.txt 
 
+
+$ echo -e "SNP_ID\tChromosome\tPosition" | cat - chromosome1_maize.txt > Chromosome1_maize.txt
+
+1. I forgot to add headers to my final chromosome, multiple, and unknown files
+2. using this command will add headers to the first 3 columns in the respective order
+3. to avoid naming my final folders something too wordy I am simply going to convert them to new files with the first word capitalized 
+
+
+$ echo -e "SNP_ID\tChromosome" | cat - old_files/multiple_maizeSNP.txt > Multiple_maizeSNP.txt
+
+1. This code only differs from the above by the removal of the "Position" header
+2. Since the multiple and unknown have no positions then there is no need for a position header
+3. Aslo switched "multiple" to "unknown" to cover for the unknown files as well using the same code
 
 ###Teosinte Data
 
@@ -118,7 +131,7 @@ $ cut -f 1-3, 77-1010, 1166-1206 master_SCPG.txt > master_SCPG_teosinte.txt
 $ awk '$2 == 1' master_SCGP_teosinte.txt | sort -n -k3 | sed 's/multiple/?/g' > chromosome1_teosinte.txt
 
 1. using the same code as from the maize data, we will replace the file we run our awk command on with master_SCGP_teosinte.txt and also change our output file name to chromosome1_teosinte.txt
-2. once again, this code was inputted multiple times to accomdate for their being 10 chromosomes and this was accomplished by changing the number that has to match in $2 to the chromosome number and changing the outpu file name. 
+2. once again, this code was inputted multiple times to accomdate for there being 10 chromosomes and this was accomplished by changing the number that has to match in $2 to the chromosome number and changing the output file name. 
 
 
 $ awk '$2 == 1' master_SCGP_teosinte.txt | sort -n -r -k3 | sed 's/multiple/-/g' > chromosome1_teosinte_decreasing.txt
@@ -134,4 +147,15 @@ $ grep "unknown" master_SCPG_teosinte.txt | sort -k1 > unknown_teosinteSNP.txt
 $ awk '$2~/^multiple/' master_SCPG_teosinte.txt > multiple_teosinteSNP.txt
 
 1. using the same code as from the maize data, we simply replace the files to match the teosinte files. 
-   
+
+
+$ echo -e "SNP_ID\tChromosome\tPosition" | cat - chromosome1_teosinte.txt > Chromosome1_teosinte.txt
+
+1. As stated in the maize data, I forgot to add headers to my final files.
+2. I will be using the same code as described in the maize data section except apply this to all teosinte data
+
+
+$ echo -e "SNP_ID\tChromosome" | cat - old_files/multiple_teosinteSNP.txt > Multiple_teosinteSNP.txt
+
+1. used the same code from the maize data except applied it to the teosinte files 
+
